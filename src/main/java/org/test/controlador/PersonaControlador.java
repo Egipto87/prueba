@@ -49,7 +49,12 @@ public class PersonaControlador {
     public List<PersonaEntidad> obtenerPorNombre(@PathParam("nombre") String nombre) {
         return  servicio.listarPorNombre(nombre);
     }
-    
+
+    @GET
+    @Path("/identificacion/{ID}")
+    public List<PersonaEntidad> obtenerPorID(@PathParam("ID") String id) {
+        return  servicio.listarPorID(id);
+    }
     
     @POST
     public PersonaEntidad crear(PersonaEntidad entidad) {
