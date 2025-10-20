@@ -52,8 +52,8 @@ public class PersonaControlador {
 
     @GET
     @Path("/identificacion/{ID}")
-    public List<PersonaEntidad> obtenerPorID(@PathParam("ID") String id) {
-        return  servicio.listarPorID(id);
+    public List<PersonaEntidad> obtenerPorIdent(@PathParam("ID") String id) {
+        return  servicio.listarPorIdent(id);
     }
     
     @POST
