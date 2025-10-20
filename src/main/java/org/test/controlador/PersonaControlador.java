@@ -33,6 +33,12 @@ public class PersonaControlador {
     } 
 
     @GET
+    @Path("/{total_personas}")
+    public int total() {
+        return servicio.buscarTodos().size();
+    }
+    
+    @GET
     @Path("/{id}")
     public PersonaEntidad obtenerPorId(@PathParam("id") Long id) {
         return servicio.buscarPorId(id);
