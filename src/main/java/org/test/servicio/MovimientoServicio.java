@@ -28,42 +28,42 @@ public class MovimientoServicio extends BaseSevicio<MovimientoEntidad, Long> {
     @SuppressWarnings("unchecked")
     @Transactional
     public String movimientos(MovimientoEntidad m){
-    String mensaje="";
-    Date fechaActual = new Date();
-
-    Query sql = movimientoRepositorio.getEntityManager().createQuery(" Select p  from MovimientoEntidad p where p.idCuenta =: cuenta order by p.fecha DESC");
-
-    sql.setParameter("cuenta", m.getIdCuenta());
-    //sql.setParameter("tipo", m.i);
-    Double saldo;
-    List<MovimientoEntidad> movimiento= sql.getResultList();
-    if(movimiento.size()==0){
-        guardar(m);  
-    }else {
-        saldo =0.0;
-        if (m.getTipoMovimiento().equals("CREDITO") && movimiento.get(0).getValor() >= 0) {
-            saldo=movimiento.get(0).getSaldo() + m.getValor();
-            m.setSaldo(saldo);
-            m.setFecha(fechaActual);
-            movimientoRepositorio.getEntityManager().persist(m);
-
-        } else {
-            if ( movimiento.get(0).getSaldo() > m.getValor() ) {
-               saldo=movimiento.get(0).getSaldo() - m.getValor(); 
+        String mensaje="";
+        Date fechaActual = new Date();
+    
+        Query sql = movimientoRepositorio.getEntityManager().createQuery(" Select p  from MovimientoEntidad p where p.idCuenta =: cuenta order by p.fecha DESC");
+    
+        sql.setParameter("cuenta", m.getIdCuenta());
+        
+        Double saldo;
+        List<MovimientoEntidad> movimiento= sql.getResultList();
+        if(movimiento.size()==0){
+            guardar(m);  
+        }else {
+            saldo =0.0;
+            if (m.getTipoMovimiento().equals("CREDITO") && movimiento.get(0).getValor() >= 0) {
+                saldo=movimiento.get(0).getSaldo() + m.getValor();
                 m.setSaldo(saldo);
                 m.setFecha(fechaActual);
                 movimientoRepositorio.getEntityManager().persist(m);
-                } else {
-                    if (movimiento.get(0).getValor() ==0.0 ) {
-                      mensaje="Saldo no disponible";  
+    
+            } else {
+                if ( movimiento.get(0).getSaldo() > m.getValor() ) {
+                   saldo=movimiento.get(0).getSaldo() - m.getValor(); 
+                    m.setSaldo(saldo);
+                    m.setFecha(fechaActual);
+                    movimientoRepositorio.getEntityManager().persist(m);
+                    } else {
+                        if (movimiento.get(0).getValor() ==0.0 ) {
+                          mensaje="Saldo no disponible";  
+                        }
+                        mensaje="Saldo insuficiente"; 
                     }
-                    mensaje="Saldo insuficiente"; 
-                }
-
-            } 
-
-    }
-        return mensaje; 
+    
+                } 
+    
+        }
+            return mensaje; 
     }
 
     @SuppressWarnings("unchecked")
