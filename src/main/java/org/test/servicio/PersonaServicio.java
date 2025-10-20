@@ -32,14 +32,14 @@ public class PersonaServicio extends BaseSevicio<PersonaEntidad, Long> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<PersonaEntidad> listarPorID(String ID){
+    public List<PersonaEntidad> listarPorIdent(String identificacion){
 
         Query sql = personaRepositorio.getEntityManager().createQuery(" Select p  from PersonaEntidad p where p.identificacion =: identificacion");
 
-        sql.setParameter("identificacion", ID);
+        sql.setParameter("identificacion", identificacion);
 
         List<PersonaEntidad> personas= sql.getResultList();
             return personas; 
-    }
+        }
 
 }
